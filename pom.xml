@@ -93,7 +93,7 @@
                         <review.team>qa</review.team>
                     </deployProperties>
                 		<publisher>
-                        <contextUrl>http://localhost:8081/artifactory</contextUrl>
+                        <contextUrl>http://10.6.17.232/artifactory</contextUrl>
                         <excludePatterns>*-tests.jar</excludePatterns>
                         <repoKey>libs-release-local</repoKey>
                         <snapshotRepoKey>libs-snapshot-local</snapshotRepoKey>
