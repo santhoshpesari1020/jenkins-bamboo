@@ -4,7 +4,7 @@
 
   <groupId>com.sanjeev</groupId>
   <artifactId>test-artifactory-maven</artifactId>
-  <version>1.9-SNAPSHOT</version>
+  <version>1.12-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>test-artifactory-maven</name>
@@ -46,10 +46,11 @@
 <distributionManagement>
   <repository>
       <id>central</id>
+      <url>http://10.6.17.232/artifactory/libs-release-local/</url>
   </repository>
   <snapshotRepository>
       <id>snapshots</id>  
-      <url>http://localhost:8081/artifactory/libs-snapshot-local/</url>
+      <url>http://10.6.17.232/artifactory/libs-snapshot-local/</url>
   </snapshotRepository>
 </distributionManagement>
 <build>
@@ -82,44 +83,58 @@
             <inherited>false</inherited>
             <executions>
                 <execution>
-                    <id>build-info</id>
-                    <goals>
-                        <goal>publish</goal>
-                    </goals>
-                    <configuration>
-            		<publisher>
-                                <contextUrl>http://localhost:8081/artifactory;GIT_REPO=sanjeev;CI_JOB_NAME=sanjeev-ci</contextUrl>
-                                <excludePatterns>*-tests.jar</excludePatterns>
-                                <repoKey>libs-release-local</repoKey>
-                                <snapshotRepoKey>libs-snapshot-local</snapshotRepoKey>
-                        </publisher>
-                    </configuration>
+                  <id>build-info</id>
+                  <goals>
+                      <goal>publish</goal>
+                  </goals>
+                  <configuration>
+                   <deployProperties>
+                        <gradle>awesome</gradle>
+                        <review.team>qa</review.team>
+                    </deployProperties>
+                		<publisher>
+                        <contextUrl>http://localhost:8081/artifactory</contextUrl>
+                        <excludePatterns>*-tests.jar</excludePatterns>
+                        <repoKey>libs-release-local</repoKey>
+                        <snapshotRepoKey>libs-snapshot-local</snapshotRepoKey>
+                    </publisher>
+                  </configuration>
                 </execution>
             </executions>
         </plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>build-helper-maven-plugin</artifactId>
-						<version>1.9.1</version>
-						<executions>
-							<execution>
-								<id>attach-zip</id>
-								<goals>
-									<goal>attach-artifact</goal>
-								</goals>
-								<configuration>
-									<artifacts>
-										<artifact>
-											<file>
-												target/test-artifactory-maven-1.9-SNAPSHOT.jar
-											</file>
-											<type>jar;jar.type=docs;jar.deployed=false</type>
-										</artifact>
-									</artifacts>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.9.1</version>
+					<executions>
+						<execution>
+							<id>attach-zip</id>
+							<goals>
+								<goal>attach-artifact</goal>
+							</goals>
+							<configuration>
+								<artifacts>
+									<artifact>
+										<file>
+											target/test.zip
+										</file>
+										<type>zip;zip.type=docs;zip.deployed=false</type>
+									</artifact>
+								</artifacts>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+                        <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <configuration>
+                        <descriptorRefs>
+                            <descriptorRef>jar-with-dependencies</descriptorRef>
+                        </descriptorRefs>
+                    </configuration>
+                </plugin>
     </plugins>
 </build>
 </project>
