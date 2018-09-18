@@ -35,37 +35,46 @@
     <groupId>commons-collections</groupId>
     <artifactId>commons-collections</artifactId>
     <version>3.2.1</version>
+                    <exclusions>
+                    <exclusion>
+                        <groupId>com.fasterxml.jackson.core</groupId>
+                        <artifactId>jackson-core</artifactId>
+                    </exclusion>
+                  </exclusions>
 </dependency>  
 </dependencies>
-  <distributionManagement>
-    <repository>
-        <id>central</id>
-        <name>artifactory.dev.adnxs.net-releases</name>
-        <!--url>https://artifactory.dev.adnxs.net:443/artifactory/maven</url-->
-        <!--url>http://35.232.4.8:8081/artifactory/libs-release-local</url-->
-	<!--url>http://localhost:8081/artifactory/libs-release-local/</url-->
-    </repository>
-    <snapshotRepository>
-        <id>snapshots</id>
-        <name>artifactory.dev.adnxs.net-snapshots</name>
-        <!--url>https://artifactory.dev.adnxs.net:443/artifactory/maven</url-->
-        <!--url>http://35.232.4.8:8081/artifactory/libs-snapshot-local</url-->    
-        <url>http://localhost:8081/artifactory/libs-snapshot-local/</url>
-    </snapshotRepository>
-  </distributionManagement>
+<distributionManagement>
+  <repository>
+      <id>central</id>
+  </repository>
+  <snapshotRepository>
+      <id>snapshots</id>  
+      <url>http://localhost:8081/artifactory/libs-snapshot-local/</url>
+  </snapshotRepository>
+</distributionManagement>
 <build>
     <plugins>
-        <!--plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-jar-plugin</artifactId>
-            <configuration>
-                <archive>
-                    <manifest>
-                        <mainClass>com.sanjeev.App</mainClass>
-                    </manifest>
-                </archive>
-            </configuration>
-        </plugin-->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.8</version>
+          <executions>
+            <execution>
+              <id>package-and-attach-docs-zip</id>
+              <phase>package</phase>
+              <goals>
+                <goal>run</goal>
+              </goals>
+              <configuration>
+                <target>
+                  <zip destfile="${project.build.directory}/test.zip">
+                    <fileset dir="${project.build.directory}/classes"/>
+                  </zip>
+                </target>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
         <plugin>
             <groupId>org.jfrog.buildinfo</groupId>
             <artifactId>artifactory-maven-plugin</artifactId>
